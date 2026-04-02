@@ -4,7 +4,7 @@ enum ShapeType {
   RECT,
   CIRCLE,
   TRIANGLE,
-  OCTAGONE,
+  HEXAGONE,
   OVAL
 }
 
@@ -14,28 +14,36 @@ const shapes: Graphics[] = [];
 let gravity = 0.98;
 
 
-function generateRandomShape(shapeType:number, x:number, y:number , w:number, h:number, color:number|string) {
+function generateRandomShape(shapeType:number, w:number, h:number, color:number|string) {
+    const x = 0, y = 0;
     let shape;
+    const randomAngle = (Math.random() * 360) * (Math.PI / 180);
     switch(shapeType) {
-      case ShapeType.RECT: shape = new Graphics().rect(x, y, w, h).fill(color); break;
-      case ShapeType.CIRCLE: shape = new Graphics().circle(x, y, w).fill(color); break;
+      case ShapeType.RECT: shape = new Graphics()
+        .rotateTransform(randomAngle)
+        .rect(x, y, w, h).fill(color); 
+        break;
+      case ShapeType.CIRCLE: shape = new Graphics()
+        .circle(x, y, w)
+        .fill(color);
+        break;
       case ShapeType.TRIANGLE: 
         shape = new Graphics()
-          .rotateTransform((Math.random() * 360) * (Math.PI / 180))
+          .rotateTransform(randomAngle)
           .moveTo(x, y)
           .lineTo(x+w, y)
           .lineTo(x, y+h)
           .lineTo(x, y)
           .fill(color); 
-
         break;
-      case ShapeType.OCTAGONE: {
+      case ShapeType.HEXAGONE: {
         const r = Math.min(w, h) / 2;
         const cx = x + r;
         const cy = y + r;
-        const sides = 8;
+        const sides = 6;
         const angleStep = (Math.PI * 2) / sides;
         const g = new Graphics();
+        g.rotateTransform(randomAngle);
         g.moveTo(
           cx + r * Math.cos(0),
           cy + r * Math.sin(0)
@@ -49,7 +57,11 @@ function generateRandomShape(shapeType:number, x:number, y:number , w:number, h:
         shape = g.closePath().fill(color);
         break;
       }
-      case ShapeType.OVAL: shape = new Graphics().ellipse(x, y, w, h).fill(color); break;
+      case ShapeType.OVAL: shape = new Graphics()
+        .rotateTransform(randomAngle)
+        .ellipse(x, y, w, h)
+        .fill(color);
+        break;
       default: shape = new Graphics().rect(x, y, w, h).fill(color);
     }
     return shape;
@@ -59,12 +71,12 @@ function generateRandomShape(shapeType:number, x:number, y:number , w:number, h:
 function generateShapes(app: Application, count: number) {
   for (let i = 0; i < count; i++) {
     const x = Math.floor(Math.random()*app.screen.width);
-    const y = 0;//-app.screen.height;
+    const y = -app.screen.height;
     const w = Math.floor(Math.random()*64)+28; 
     const h = Math.floor(Math.random()*64)+28;
     const color = Math.floor(Math.random() * 0xFFFFFF);
     const shapeType = Math.floor(Math.random() * 6);
-    const shape = generateRandomShape(shapeType, 0, 0, w, h, color);
+    const shape = generateRandomShape(shapeType, w, h, color);
     shape.position.set(x, y);
     shape.interactive = true;
     shape.on('click', () => {
