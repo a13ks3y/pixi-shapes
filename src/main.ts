@@ -64,6 +64,9 @@ function generateRandomShape(shapeType:number, w:number, h:number, color:number|
         break;
       default: shape = new Graphics().rect(x, y, w, h).fill(color);
     }
+    const rect = shape.getBounds();
+    const area = rect.width * rect.height; // lol
+    shape["area"] = area; // @hack @todo fix it
     return shape;
 }
 
@@ -95,17 +98,21 @@ function generateShapes(app: Application, count: number) {
 
 (async () => {
   const app = new Application();
-  await app.init({ background: "#123312", resizeTo: window });
+  await app.init({ background: "#123312", resizeTo: document.getElementsByTagName('main')[0] });
   document.getElementById("pixi-container")!.appendChild(app.canvas);
   const gravityEl: HTMLInputElement = document.getElementById('gravity') as HTMLInputElement;
   const generationRangeEl: HTMLInputElement = document.getElementById('generation-rate') as HTMLInputElement;
   const generationRangeTextEl: HTMLElement = document.getElementById('generation-rate-text') as HTMLElement;
   const gravityTextEl: HTMLElement = document.getElementById('gravity-text') as HTMLElement;
+  const shapeCountEl: HTMLElement = document.getElementById('shapes-count') as HTMLElement;
+  const shapeAreaEl: HTMLElement = document.getElementById('shapes-area') as HTMLElement;
   let spawnAccumulator = 0;
 
   app.ticker.add((time) => {
     gravity = Number(gravityEl.value);
-
+    shapeCountEl.innerText = shapes.length.toString(10);
+    const totalArea = shapes.reduce((p, c) => Number(c["area"]) + p, 0);
+    shapeAreaEl.innerText = totalArea.toFixed(2);
     // Get shapes per second from the range input
     const shapesPerSecond = Number(generationRangeEl.value);
     generationRangeTextEl.innerText = shapesPerSecond.toString(10);
