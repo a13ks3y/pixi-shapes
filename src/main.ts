@@ -59,7 +59,7 @@ function generateRandomShape(shapeType:number, x:number, y:number , w:number, h:
 function generateShapes(app: Application, count: number) {
   for (let i = 0; i < count; i++) {
     const x = Math.floor(Math.random()*app.screen.width);
-    const y = Math.floor(Math.random()*app.screen.height) * -2;
+    const y = 0;//-app.screen.height;
     const w = Math.floor(Math.random()*64)+28; 
     const h = Math.floor(Math.random()*64)+28;
     const color = Math.floor(Math.random() * 0xFFFFFF);
@@ -67,7 +67,7 @@ function generateShapes(app: Application, count: number) {
     const shape = generateRandomShape(shapeType, 0, 0, w, h, color);
     shape.position.set(x, y);
     shape.interactive = true;
-    shape.on('click', e => {
+    shape.on('click', () => {
       app.stage.removeChild(shape);
       const index = shapes.indexOf(shape);
       if (index !== -1) {
@@ -100,11 +100,9 @@ function generateShapes(app: Application, count: number) {
     gravityTextEl.innerText = gravity.toString(10);
 
     spawnAccumulator += shapesPerSecond * time.deltaMS / 1000//* deltaSec;
-    console.log('spawnAccumulator', spawnAccumulator);
-    // Generate as many shapes as needed for this frame
-    while (spawnAccumulator >= 1) {
-      generateShapes(app, 1);
-      spawnAccumulator -= 1;
+    if (spawnAccumulator > 1) {
+      generateShapes(app, Math.floor(spawnAccumulator));
+      spawnAccumulator = 0;
     }
 
     shapes.forEach(shape => {
