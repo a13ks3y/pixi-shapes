@@ -1,4 +1,4 @@
-import { Application } from "pixi.js";
+import { Application, Rectangle } from "pixi.js";
 import { ShapeController } from "./shape.controller";
 import { ShapeModel } from "./shape.model";
 import { ShapeType } from "./shape.view";
@@ -6,19 +6,33 @@ import { ShapeType } from "./shape.view";
 const MAX_SHAPES_COUNT = 1000;
 let shapes: ShapeController[] = [];
 
+function generateRandomShapeAt(app: Application, x: number, y: number) {
+  const shapeModel = new ShapeModel(
+    x,
+    y,
+    Math.floor(Math.random() * 64) + 28,
+    Math.floor(Math.random() * 64) + 28,
+    Math.floor(Math.random() * 0xffffff),
+    Math.random() * 360 * (Math.PI / 180),
+    Math.floor(Math.random() * 6),
+  );
+  const shape = new ShapeController(app.stage, shapeModel);
+  shapes.push(shape);
+  shape.move(x, y);
+  return shape;
+}
+
+function generateRandomShape(app: Application) {
+  return generateRandomShapeAt(
+    app,
+    Math.floor(Math.random() * app.screen.width),
+    -app.screen.height,
+  );
+}
+
 function generateShapes(app: Application, count: number) {
   for (let i = 0; i < count; i++) {
-    const shapeModel = new ShapeModel(
-      Math.floor(Math.random() * app.screen.width),
-      -app.screen.height,
-      Math.floor(Math.random() * 64) + 28,
-      Math.floor(Math.random() * 64) + 28,
-      Math.floor(Math.random() * 0xffffff),
-      Math.random() * 360 * (Math.PI / 180),
-      Math.floor(Math.random() * 6),
-    );
-    const shape = new ShapeController(app.stage, shapeModel);
-    shapes.push(shape);
+    generateRandomShape(app);
   }
 }
 
@@ -55,6 +69,13 @@ function generateShapes(app: Application, count: number) {
     );
     const randomColor = Math.floor(Math.random() * 0xffffff);
     filteredShapes.forEach((shape) => shape.setColor(randomColor));
+  });
+  app.stage.hitArea = new Rectangle(0, 0, app.screen.width, app.screen.height);
+  app.stage.interactive = true;
+  app.stage.on("click", (e) => {
+    if (e.target === app.stage) {
+      generateRandomShapeAt(app, e.global.x, e.global.y);
+    }
   });
 
   const gravityDecreaseBtn = document.getElementById("gravity-decrease");
