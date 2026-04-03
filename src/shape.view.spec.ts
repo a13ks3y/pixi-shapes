@@ -32,4 +32,9 @@ describe("ShapeViews implementation", () => {
     const area = view.draw(g, 16, 16, 0, 0);
     expect(area.toFixed(2)).toEqual("804.25");
   });
+  it("should render cloud and return correct area", () => {
+    const view = ShapeViews[ShapeType.CLOUD];
+    const area = view.draw(g, 16, 16, 0, 0);
+    expect(area.toFixed(2)).toEqual("201.06");
+  });
 });

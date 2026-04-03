@@ -1,8 +1,9 @@
 import { Application } from "pixi.js";
 import { ShapeController } from "./shape.controller";
 import { ShapeModel } from "./shape.model";
+import { ShapeType } from "./shape.view";
 
-const MAX_SHAPES_COUNT = 50;
+const MAX_SHAPES_COUNT = 1000;
 let shapes: ShapeController[] = [];
 let gravity = 0.98;
 
@@ -49,6 +50,14 @@ function generateShapes(app: Application, count: number) {
   ) as HTMLElement;
   let spawnAccumulator = 0;
 
+  app.stage.on("shapeTypeChanged", (shapeType: number) => {
+    const filteredShapes = shapes.filter(
+      (shape) => shape.shapeType === (shapeType as ShapeType),
+    );
+    const randomColor = Math.floor(Math.random() * 0xffffff);
+    filteredShapes.forEach((shape) => shape.setColor(randomColor));
+  });
+
   app.ticker.add((time) => {
     shapes = shapes.filter((shape) => !shape.isDisposed);
     gravity = Number(gravityEl.value);
@@ -66,7 +75,7 @@ function generateShapes(app: Application, count: number) {
     }
 
     shapes.forEach((shape) => {
-      shape.update(app.screen.height, gravity, time.deltaTime);
+      shape.update(app.screen.height - 64, gravity, time.deltaTime);
     });
 
     if (shapes.length >= MAX_SHAPES_COUNT) {

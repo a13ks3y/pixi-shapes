@@ -9,6 +9,20 @@ export class ShapeController {
   private _model: ShapeModel;
   public isDisposed: boolean = false;
   public area: number = 0;
+  public get shapeType(): ShapeType {
+    return this._model.shapeType;
+  }
+  public setColor(color: number | string) {
+    this._model.color = color;
+    this._graphics.clear();
+    this.area = this._view.draw(
+      this._graphics,
+      this._model.w,
+      this._model.h,
+      this._model.color,
+      this._model.angle,
+    );
+  }
   constructor(stage: Container, shapeModel: ShapeModel) {
     this._model = shapeModel;
     this._stage = stage;
@@ -23,8 +37,12 @@ export class ShapeController {
       this._model.angle,
     );
     this._graphics.interactive = true;
-    this._graphics.on("click", this.dispose.bind(this));
-    this._graphics.on("touch", this.dispose.bind(this));
+    this._graphics.on("click", () => {
+      this.clickHanlder();
+    });
+    this._graphics.on("touch", () => {
+      this.clickHanlder();
+    });
     this._stage.addChild(this._graphics);
     this.move(this._model.x, this._model.y);
   }
@@ -41,6 +59,10 @@ export class ShapeController {
       deltaTime,
     );
     this.move(this._model.x, this._model.y);
+  }
+  clickHanlder() {
+    this._stage.emit("shapeTypeChanged", this._model.shapeType);
+    this.dispose();
   }
   dispose() {
     this._stage.removeChild(this._graphics);
