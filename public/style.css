@@ -52,13 +52,18 @@ button {
     outline: none;
 }
 
-button:hover, button:focus {
-    background-color: linear-gradient(90deg, #5f65d3 0%, #a3a8f7 100%);
+button:hover,
+button:focus {
+    background: linear-gradient(90deg, #5f65d3 0%, #a3a8f7 100%);
     transform: translateY(-2px) scale(1.03);
     box-shadow: 0 4px 16px rgba(30, 30, 40, 0.22);
 }
 
 button:active {
-    background-color: linear-gradient(90deg, #3b3f99 0%, #6e73c7 100%);
+    background: linear-gradient(90deg, #3b3f99 0%, #6e73c7 100%);
     transform: translateY(1px) scale(0.98);
+}
+
+button:focus-visible {
+    box-shadow: 0 4px 16px rgba(30, 30, 40, 0.22), 0 0 0 4px rgba(143,148,251,0.12);
 }
