@@ -75,7 +75,7 @@ function generateShapes(app: Application, count: number) {
     }
 
     shapes.forEach((shape) => {
-      shape.update(app.screen.height - 64, gravity, time.deltaTime);
+      shape.update(app.screen.height + 8, gravity, time.deltaTime);
     });
 
     if (shapes.length >= MAX_SHAPES_COUNT) {

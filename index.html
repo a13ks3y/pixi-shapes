@@ -9,6 +9,20 @@
 </head>
 
 <body>
+    <div class="controls">
+        <div>
+            <div>Shapes on the page: <span id="shapes-count"></span></div>
+            <div>Total area: <span id="shapes-area"></span>p^2</div>
+        </div>
+        <div>
+            <label for="gravity">Gravity: <span id="gravity-text">9.8</span></label>
+            <input id="gravity" type="range" value="9.8" max="16" min="0.1" step="0.1"/>
+        </div>
+        <div>
+            <label for="generation-rate">Generation Rate: <span id="generation-rate-text">6</span> shapes per second</label>
+            <input id="generation-rate" type="range" value="6" max="16" min="1"/>
+        </div>
+    </div>
     <main>
         <div id="app">
             <div id="pixi-container"></div>
@@ -20,15 +34,6 @@
         <button id="generation-rate-decrease" aria-label="Decrease generation rate">-</button>
         <button id="generation-rate-increase" aria-label="Increase generation rate">+</button>
     </footer>
-    <div class="controls">
-        <div>Shapes on the page: <span id="shapes-count"></span></div>
-        <div>Total area: <span id="shapes-area"></span>p^2</div>
-        <label for="gravity">Gravity: <span id="gravity-text">9.8</span></label>
-        <input id="gravity" type="range" value="9.8" max="16" min="0.1" step="0.1"/>
-        <br>
-        <label for="generation-rate">Generation Rate: <span id="generation-rate-text">6</span> shapes per second</label>
-        <input id="generation-rate" type="range" value="6" max="16" min="1"/>
-    </div>
 
     <script type="module" src="/src/main.ts"></script>
 </body>
