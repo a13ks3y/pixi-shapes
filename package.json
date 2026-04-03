@@ -8,7 +8,7 @@
     "test": "vitest",
     "start": "npm run dev",
     "build": "npm run lint && tsc && vite build",
-    "lint": "eslint .",
+    "lint": "eslint . --fix",
     "dev": "vite"
   },
   "dependencies": {
