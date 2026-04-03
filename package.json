@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "deploy": "sh deploy.sh",
     "test": "vitest",
     "start": "npm run dev",
     "build": "npm run lint && tsc && vite build",
