@@ -38,6 +38,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
+      g.pivot.set(w / 2, h / 2);
       g.rotateTransform(angle)
         .moveTo(0, 0)
         .lineTo(0 + w, 0)
@@ -55,6 +56,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
+      g.pivot.set(w / 2, h / 2);
       g.rotateTransform(angle).rect(0, 0, w, h).fill(color);
       return w * h;
     },
@@ -72,6 +74,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       const cy = 0 + r;
       const sides = 6;
       const angleStep = (Math.PI * 2) / sides;
+      g.pivot.set(r / 2, r / 2);
       g.rotateTransform(angle);
       g.moveTo(cx + r * Math.cos(0), cy + r * Math.sin(0));
       for (let j = 1; j < sides; j++) {

@@ -4,7 +4,7 @@
 ```bash
     npm run build
 ```
-## Deply (GitHub Pages)
+## Deploy (GitHub Pages)
 ```bash
     npm run deploy
 ```
