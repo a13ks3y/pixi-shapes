@@ -26,7 +26,7 @@ function generateRandomShape(app: Application) {
   return generateRandomShapeAt(
     app,
     Math.floor(Math.random() * app.screen.width),
-    -app.screen.height,
+    0,
   );
 }
 

@@ -1,4 +1,5 @@
 export class ShapeModel {
+  private vy: number;
   constructor(
     public x: number,
     public y: number,
@@ -9,6 +10,7 @@ export class ShapeModel {
     public shapeType: number,
   ) {
     if (!this.h) this.h = this.w;
+    this.vy = 0;
   }
   update(
     gravity: number,
@@ -16,10 +18,9 @@ export class ShapeModel {
     bounds: { height: number },
     deltaTime: number,
   ) {
-    if (
-      Math.floor(this.y + bounds.height - bounds.height * 0.2) < screenHeight
-    ) {
-      this.y += gravity * deltaTime;
+    if (Math.floor(this.y + bounds.height) < screenHeight) {
+      this.vy += (gravity * deltaTime) / 100;
+      this.y += this.vy;
     }
   }
 }
