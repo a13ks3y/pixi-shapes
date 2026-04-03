@@ -13,3 +13,5 @@ cp -r dist/* docs/
 git add docs/
 git commit -m "Update docs from dist"
 git push origin gh-pages
+
+git checkout -
