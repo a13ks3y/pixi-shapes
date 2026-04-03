@@ -6,38 +6,51 @@ const MAX_SHAPES_COUNT = 50;
 let shapes: ShapeController[] = [];
 let gravity = 0.98;
 
-
 function generateShapes(app: Application, count: number) {
   for (let i = 0; i < count; i++) {
     const shapeModel = new ShapeModel(
-      Math.floor(Math.random()*app.screen.width),
+      Math.floor(Math.random() * app.screen.width),
       -app.screen.height,
-      Math.floor(Math.random()*64)+28, 
-      Math.floor(Math.random()*64)+28,
-      Math.floor(Math.random() * 0xFFFFFF),
-      (Math.random() * 360) * (Math.PI / 180),
-      Math.floor(Math.random()*6)
+      Math.floor(Math.random() * 64) + 28,
+      Math.floor(Math.random() * 64) + 28,
+      Math.floor(Math.random() * 0xffffff),
+      Math.random() * 360 * (Math.PI / 180),
+      Math.floor(Math.random() * 6),
     );
     const shape = new ShapeController(app.stage, shapeModel);
     shapes.push(shape);
   }
 }
 
-
 (async () => {
   const app = new Application();
-  await app.init({ background: "#123312", resizeTo: document.getElementsByTagName('main')[0] });
+  await app.init({
+    background: "#123312",
+    resizeTo: document.getElementsByTagName("main")[0],
+  });
   document.getElementById("pixi-container")!.appendChild(app.canvas);
-  const gravityEl: HTMLInputElement = document.getElementById('gravity') as HTMLInputElement;
-  const generationRangeEl: HTMLInputElement = document.getElementById('generation-rate') as HTMLInputElement;
-  const generationRangeTextEl: HTMLElement = document.getElementById('generation-rate-text') as HTMLElement;
-  const gravityTextEl: HTMLElement = document.getElementById('gravity-text') as HTMLElement;
-  const shapeCountEl: HTMLElement = document.getElementById('shapes-count') as HTMLElement;
-  const shapeAreaEl: HTMLElement = document.getElementById('shapes-area') as HTMLElement;
+  const gravityEl: HTMLInputElement = document.getElementById(
+    "gravity",
+  ) as HTMLInputElement;
+  const generationRangeEl: HTMLInputElement = document.getElementById(
+    "generation-rate",
+  ) as HTMLInputElement;
+  const generationRangeTextEl: HTMLElement = document.getElementById(
+    "generation-rate-text",
+  ) as HTMLElement;
+  const gravityTextEl: HTMLElement = document.getElementById(
+    "gravity-text",
+  ) as HTMLElement;
+  const shapeCountEl: HTMLElement = document.getElementById(
+    "shapes-count",
+  ) as HTMLElement;
+  const shapeAreaEl: HTMLElement = document.getElementById(
+    "shapes-area",
+  ) as HTMLElement;
   let spawnAccumulator = 0;
 
   app.ticker.add((time) => {
-    shapes = shapes.filter(shape => !shape.isDisposed);
+    shapes = shapes.filter((shape) => !shape.isDisposed);
     gravity = Number(gravityEl.value);
     shapeCountEl.innerText = shapes.length.toString(10);
     const totalArea = shapes.reduce((p, c) => Number(c["area"]) + p, 0);
@@ -46,13 +59,13 @@ function generateShapes(app: Application, count: number) {
     generationRangeTextEl.innerText = shapesPerSecond.toString(10);
     gravityTextEl.innerText = gravity.toString(10);
 
-    spawnAccumulator += shapesPerSecond * time.deltaMS / 1000//* deltaSec;
+    spawnAccumulator += (shapesPerSecond * time.deltaMS) / 1000; //* deltaSec;
     if (spawnAccumulator > 1) {
       generateShapes(app, Math.floor(spawnAccumulator));
       spawnAccumulator = 0;
     }
 
-    shapes.forEach(shape => {
+    shapes.forEach((shape) => {
       shape.update(app.screen.height, gravity, time.deltaTime);
     });
 
