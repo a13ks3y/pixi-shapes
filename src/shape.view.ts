@@ -121,7 +121,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       }
 
       g.fill(color);
-      
+
       return Math.PI * (w / 2) * (h / 2);
     },
   },
