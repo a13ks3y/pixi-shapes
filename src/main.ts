@@ -5,7 +5,6 @@ import { ShapeType } from "./shape.view";
 
 const MAX_SHAPES_COUNT = 1000;
 let shapes: ShapeController[] = [];
-let gravity = 0.98;
 
 function generateShapes(app: Application, count: number) {
   for (let i = 0; i < count; i++) {
@@ -58,15 +57,40 @@ function generateShapes(app: Application, count: number) {
     filteredShapes.forEach((shape) => shape.setColor(randomColor));
   });
 
+  const gravityDecreaseBtn = document.getElementById("gravity-decrease");
+  gravityDecreaseBtn?.addEventListener("click", () => {
+    const gravity = Number(gravityEl.value);
+    gravityEl.value = (gravity - 0.1).toString();
+  });
+  const gravityIncreaseBtn = document.getElementById("gravity-increase");
+  gravityIncreaseBtn?.addEventListener("click", () => {
+    const gravity = Number(gravityEl.value);
+    gravityEl.value = (gravity + 0.1).toString();
+  });
+  const generationRateDecreaseBtn = document.getElementById(
+    "generation-rate-decrease",
+  );
+  generationRateDecreaseBtn?.addEventListener("click", () => {
+    const shapesPerSecond = Number(generationRangeEl.value);
+    generationRangeEl.value = (shapesPerSecond - 1).toString();
+  });
+  const generationRateIncreaseBtn = document.getElementById(
+    "generation-rate-increase",
+  );
+  generationRateIncreaseBtn?.addEventListener("click", () => {
+    const shapesPerSecond = Number(generationRangeEl.value);
+    generationRangeEl.value = (shapesPerSecond + 1).toString();
+  });
+
   app.ticker.add((time) => {
     shapes = shapes.filter((shape) => !shape.isDisposed);
-    gravity = Number(gravityEl.value);
+    const gravity = Number(gravityEl.value);
     shapeCountEl.innerText = shapes.length.toString(10);
     const totalArea = shapes.reduce((p, c) => Number(c["area"]) + p, 0);
     shapeAreaEl.innerText = totalArea.toFixed(2);
     const shapesPerSecond = Number(generationRangeEl.value);
     generationRangeTextEl.innerText = shapesPerSecond.toString(10);
-    gravityTextEl.innerText = gravity.toString(10);
+    gravityTextEl.innerText = gravity.toFixed(2);
 
     spawnAccumulator += (shapesPerSecond * time.deltaMS) / 1000; //* deltaSec;
     if (spawnAccumulator > 1) {
