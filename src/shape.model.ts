@@ -15,10 +15,10 @@ export class ShapeModel {
   update(
     gravity: number,
     screenHeight: number,
-    bounds: { height: number },
+    bounds: { maxY: number },
     deltaTime: number,
   ) {
-    if (Math.floor(this.y + bounds.height) < screenHeight) {
+    if (Math.floor(bounds.maxY) < screenHeight) {
       this.vy += (gravity * deltaTime) / 100;
       this.y += this.vy;
     }
