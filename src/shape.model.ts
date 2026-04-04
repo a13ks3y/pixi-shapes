@@ -19,8 +19,8 @@ export class ShapeModel {
     deltaTime: number,
   ) {
     if (Math.floor(bounds.maxY) < screenHeight) {
-      this.vy += (gravity * deltaTime) / 100;
-      this.y += this.vy;
+      this.vy += gravity * deltaTime;
+      this.y += (this.vy * deltaTime) / 100;
     }
   }
 }
