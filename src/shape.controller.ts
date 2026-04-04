@@ -38,10 +38,10 @@ export class ShapeController {
     );
     this._graphics.interactive = true;
     this._graphics.on("click", () => {
-      this.clickHanlder();
+      this.clickHandler();
     });
     this._graphics.on("touch", () => {
-      this.clickHanlder();
+      this.clickHandler();
     });
     this._stage.addChild(this._graphics);
     this.move(this._model.x, this._model.y);
@@ -60,7 +60,7 @@ export class ShapeController {
     );
     this.move(this._model.x, this._model.y);
   }
-  clickHanlder() {
+  clickHandler() {
     this._stage.emit("shapeTypeChanged", this._model.shapeType);
     this.dispose();
   }
