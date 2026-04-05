@@ -12,13 +12,9 @@ export class ShapeModel {
     if (!this.h) this.h = this.w;
     this.vy = 0;
   }
-  update(
-    gravity: number,
-    screenHeight: number,
-    bounds: { maxY: number },
-    deltaTime: number,
-  ) {
-    if (Math.floor(bounds.maxY) < screenHeight) {
+  update(gravity: number, screenHeight: number, deltaTime: number) {
+    const maxY = this.y + this.h;
+    if (Math.floor(maxY) < screenHeight) {
       this.vy += gravity * deltaTime;
       this.y += (this.vy * deltaTime) / 100;
     }

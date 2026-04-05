@@ -9,8 +9,8 @@ describe("ShapeViews implementation", () => {
   });
   it("should render cirlce and return correct area", () => {
     const view = ShapeViews[ShapeType.CIRCLE];
-    const area = view.draw(g, 16, 0, 0, 0);
-    expect(area.toFixed(2)).toEqual("50.27");
+    const area = view.draw(g, 3.3, 0, 0, 0);
+    expect(area.toFixed(2)).toEqual("34.21");
   });
   it("should render rect and return correct area", () => {
     const view = ShapeViews[ShapeType.RECT];

@@ -25,7 +25,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       h: number,
       color: number | string,
     ): number => {
-      const r = (w + h) / 4;
+      const r = Math.max(w, h);
       g.circle(0, 0, r).fill(color);
       return Math.PI * r ** 2;
     },

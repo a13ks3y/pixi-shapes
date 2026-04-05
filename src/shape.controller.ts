@@ -52,12 +52,7 @@ export class ShapeController {
     this._graphics.position.set(x, y);
   }
   update(screenHeight: number, gravity: number, deltaTime: number) {
-    this._model.update(
-      gravity,
-      screenHeight,
-      this._graphics.getBounds(),
-      deltaTime,
-    );
+    this._model.update(gravity, screenHeight, deltaTime);
     this.move(this._model.x, this._model.y);
   }
   clickHandler() {
@@ -66,6 +61,8 @@ export class ShapeController {
   }
   dispose() {
     this._stage.removeChild(this._graphics);
+    this._graphics.removeAllListeners();
+    this._graphics.destroy();
     this.isDisposed = true;
   }
 }
