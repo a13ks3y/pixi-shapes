@@ -3,19 +3,22 @@ import { IShapeView, ShapeType, ShapeViews } from "./shape.view";
 import { ShapeModel } from "./shape.model";
 
 export class ShapeController {
+  //@todo: move _graphics to view
   private _graphics: Graphics;
   private _stage: Container;
   private _view: IShapeView;
   private _model: ShapeModel;
   public isDisposed: boolean = false;
-  public area: number = 0;
+  public get area(): number {
+    return this._model.area;
+  };
   public get shapeType(): ShapeType {
     return this._model.shapeType;
   }
   public setColor(color: number | string) {
     this._model.color = color;
     this._graphics.clear();
-    this.area = this._view.draw(
+    this._view.draw(
       this._graphics,
       this._model.w,
       this._model.h,
@@ -29,7 +32,7 @@ export class ShapeController {
     this._graphics = new Graphics();
 
     this._view = ShapeViews[this._model.shapeType as ShapeType];
-    this.area = this._view.draw(
+    this._view.draw(
       this._graphics,
       this._model.w,
       this._model.h,
@@ -52,7 +55,8 @@ export class ShapeController {
     this._graphics.position.set(x, y);
   }
   update(screenHeight: number, gravity: number, deltaTime: number) {
-    this._model.update(gravity, screenHeight, deltaTime);
+    const shapeHeight = this._graphics.getBounds().height;
+    this._model.update(gravity,  shapeHeight, screenHeight, deltaTime);
     this.move(this._model.x, this._model.y);
   }
   clickHandler() {
