@@ -11,7 +11,7 @@ export class ShapeController {
   public isDisposed: boolean = false;
   public get area(): number {
     return this._model.area;
-  };
+  }
   public get shapeType(): ShapeType {
     return this._model.shapeType;
   }
@@ -56,7 +56,7 @@ export class ShapeController {
   }
   update(screenHeight: number, gravity: number, deltaTime: number) {
     const shapeHeight = this._graphics.getBounds().height;
-    this._model.update(gravity,  shapeHeight, screenHeight, deltaTime);
+    this._model.update(gravity, shapeHeight, screenHeight, deltaTime);
     this.move(this._model.x, this._model.y);
   }
   clickHandler() {

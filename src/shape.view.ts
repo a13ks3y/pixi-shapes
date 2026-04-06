@@ -19,12 +19,7 @@ export interface IShapeView {
 }
 export const ShapeViews: Record<ShapeType, IShapeView> = {
   [ShapeType.CIRCLE]: {
-    draw: (
-      g: Graphics,
-      w: number,
-      h: number,
-      color: number | string,
-    ): void => {
+    draw: (g: Graphics, w: number, h: number, color: number | string): void => {
       const r = Math.max(w, h);
       g.pivot.set(-r, -r);
       g.circle(0, 0, r).fill(color);
@@ -38,7 +33,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
-      g.pivot.set(-w , -h );
+      g.pivot.set(-w, -h);
       g.rotateTransform(angle)
         .moveTo(0, 0)
         .lineTo(0 + w, 0)
@@ -56,7 +51,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
-      g.pivot.set(-w,-h);
+      g.pivot.set(-w, -h);
       g.rotateTransform(angle).rect(0, 0, w, h).fill(color);
       return w * h;
     },
@@ -96,7 +91,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
-      g.pivot.set(-w,-h);
+      g.pivot.set(-w, -h);
       g.rotateTransform(angle).ellipse(0, 0, w, h).fill(color);
       return Math.PI * w * h;
     },

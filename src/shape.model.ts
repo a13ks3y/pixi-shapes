@@ -14,21 +14,29 @@ export class ShapeModel {
     if (!this.h) this.h = this.w;
     this.vy = 0;
   }
-  update(gravity: number, shapeHeight: number, screenHeight: number, deltaTime: number) {
-    const maxY = this.y +  shapeHeight;
+  update(
+    gravity: number,
+    shapeHeight: number,
+    screenHeight: number,
+    deltaTime: number,
+  ) {
+    const maxY = this.y + shapeHeight;
     if (Math.floor(maxY) < screenHeight) {
       this.vy += gravity * deltaTime;
     } else {
       this.vy = 0;
     }
-    this.y += (this.vy * deltaTime) / 100; // Adjusted for nice looking number of gravity. 
+    this.y += (this.vy * deltaTime) / 100; // Adjusted for nice looking number of gravity.
   }
-  // While it seems to be a good idea to have a method for calculating area in the view, as view knows how to draw itself, but it is not views job to calculate the area, it is models job, as it is the one who has all the data to calculate area, and if we will add new shape, we will need to add method for calculating area in the model anyway, so it is better to have it in one place. 
+  // While it seems to be a good idea to have a method for calculating area in the view, as view knows how to draw itself, but it is not views job to calculate the area, it is models job, as it is the one who has all the data to calculate area, and if we will add new shape, we will need to add method for calculating area in the model anyway, so it is better to have it in one place.
   get area(): number {
-    return this.w * this.h;  
+    return this.w * this.h;
   }
 
-  static createShape(shapeType: number, options: Partial<ShapeModel>): ShapeModel {
+  static createShape(
+    shapeType: number,
+    options: Partial<ShapeModel>,
+  ): ShapeModel {
     switch (shapeType) {
       case ShapeType.RECT:
         return new RectModel(
@@ -138,7 +146,7 @@ class EllipseModel extends ShapeModel {
 class CloudModel extends ShapeModel {
   get area(): number {
     const r = Math.min(this.w, this.h);
-    // @todo replace approximation with real calculation 
+    // @todo replace approximation with real calculation
     return Math.PI * r ** 2;
   }
 }

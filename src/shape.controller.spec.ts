@@ -42,8 +42,11 @@ describe("ShapeController class", () => {
     shape.update(100, 9.8, 16);
     expect(modelUpdateSpy).toHaveBeenCalledWith(9.8, 6, 100, 16);
   });
-  it("should update color and call draw on setColor", () => { 
-    const shape = new ShapeController(stageMock, ShapeModel.createShape(ShapeType.CIRCLE, { color: 0x654321 }));
+  it("should update color and call draw on setColor", () => {
+    const shape = new ShapeController(
+      stageMock,
+      ShapeModel.createShape(ShapeType.CIRCLE, { color: 0x654321 }),
+    );
     shape["_view"].draw = vi.fn();
     shape.setColor(0x123456);
     expect(shape["_model"].color).toBe(0x123456);
@@ -62,6 +65,6 @@ describe("ShapeController class", () => {
     shape.dispose = vi.fn();
     shape.clickHandler();
     expect(shape.dispose).toHaveBeenCalled();
-    expect(shape["_stage"].emit).toHaveBeenCalledWith("shapeTypeChanged", 3);   
+    expect(shape["_stage"].emit).toHaveBeenCalledWith("shapeTypeChanged", 3);
   });
 });
