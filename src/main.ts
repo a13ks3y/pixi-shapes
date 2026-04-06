@@ -4,21 +4,23 @@ import { ShapeModel } from "./shape.model";
 import { ShapeType } from "./shape.view";
 
 const MAX_SHAPES_COUNT = 1000;
+let totalArea = 0;
 let shapes: ShapeController[] = [];
 
 function generateRandomShapeAt(app: Application, x: number, y: number) {
-  const shapeModel = new ShapeModel(
+  const randomShapeType = Math.floor(Math.random() * 6);
+  const shapeModel = ShapeModel.createShape(randomShapeType, {
     x,
     y,
-    Math.floor(Math.random() * 64) + 28,
-    Math.floor(Math.random() * 64) + 28,
-    Math.floor(Math.random() * 0xffffff),
-    Math.random() * 360 * (Math.PI / 180),
-    Math.floor(Math.random() * 6),
-  );
+    w: Math.floor(Math.random() * 64) + 28,
+    h: Math.floor(Math.random() * 64) + 28,
+    color: Math.floor(Math.random() * 0xffffff),
+    angle: Math.random() * 360 * (Math.PI / 180),
+  });
   const shape = new ShapeController(app.stage, shapeModel);
   shapes.push(shape);
   shape.move(x, y);
+  totalArea += shape.area;
   return shape;
 }
 
@@ -102,18 +104,21 @@ function generateShapes(app: Application, count: number) {
     const shapesPerSecond = Number(generationRangeEl.value);
     generationRangeEl.value = (shapesPerSecond + 1).toString();
   });
-
   app.ticker.add((time) => {
-    shapes = shapes.filter((shape) => !shape.isDisposed);
+    shapes = shapes.filter((shape) => {
+      if (shape.isDisposed) {
+        totalArea -= shape.area;
+      }
+      return !shape.isDisposed;
+    });
     const gravity = Number(gravityEl.value);
     shapeCountEl.innerText = shapes.length.toString(10);
-    const totalArea = shapes.reduce((p, c) => Number(c["area"]) + p, 0);
     shapeAreaEl.innerText = totalArea.toFixed(2);
     const shapesPerSecond = Number(generationRangeEl.value);
     generationRangeTextEl.innerText = shapesPerSecond.toString(10);
     gravityTextEl.innerText = gravity.toFixed(2);
 
-    spawnAccumulator += (shapesPerSecond * time.deltaMS) / 1000; //* deltaSec;
+    spawnAccumulator += (shapesPerSecond * time.deltaMS) / 1000;
     if (spawnAccumulator > 1) {
       generateShapes(app, Math.floor(spawnAccumulator));
       spawnAccumulator = 0;
@@ -124,12 +129,11 @@ function generateShapes(app: Application, count: number) {
     });
 
     if (shapes.length >= MAX_SHAPES_COUNT) {
-      for (let i = 0; i < Math.floor(shapes.length / 2); i++) {
-        const shape = shapes.shift();
-        if (shape) {
-          shape.dispose();
-        }
-      }
+      const toRemove = Math.floor(shapes.length / 2);
+      shapes.splice(0, toRemove).forEach((shape) => {
+        totalArea -= shape.area;
+        shape.dispose();
+      });
     }
   });
 })();

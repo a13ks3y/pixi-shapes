@@ -15,19 +15,14 @@ export interface IShapeView {
     h: number,
     color: number | string,
     angle: number,
-  ): number;
+  ): void;
 }
 export const ShapeViews: Record<ShapeType, IShapeView> = {
   [ShapeType.CIRCLE]: {
-    draw: (
-      g: Graphics,
-      w: number,
-      h: number,
-      color: number | string,
-    ): number => {
-      const r = (w + h) / 4;
+    draw: (g: Graphics, w: number, h: number, color: number | string): void => {
+      const r = Math.max(w, h);
+      g.pivot.set(-r, -r);
       g.circle(0, 0, r).fill(color);
-      return Math.PI * r ** 2;
     },
   },
   [ShapeType.TRIANGLE]: {
@@ -38,7 +33,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
-      g.pivot.set(w / 2, h / 2);
+      g.pivot.set(-w, -h);
       g.rotateTransform(angle)
         .moveTo(0, 0)
         .lineTo(0 + w, 0)
@@ -56,7 +51,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
-      g.pivot.set(w / 2, h / 2);
+      g.pivot.set(-w, -h);
       g.rotateTransform(angle).rect(0, 0, w, h).fill(color);
       return w * h;
     },
@@ -69,12 +64,12 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
-      const r = Math.min(w, h) / 2;
+      const r = Math.min(w, h);
       const cx = 0 + r;
       const cy = 0 + r;
       const sides = 6;
       const angleStep = (Math.PI * 2) / sides;
-      g.pivot.set(r / 2, r / 2);
+      g.pivot.set(-r, -r);
       g.rotateTransform(angle);
       g.moveTo(cx + r * Math.cos(0), cy + r * Math.sin(0));
       for (let j = 1; j < sides; j++) {
@@ -96,6 +91,7 @@ export const ShapeViews: Record<ShapeType, IShapeView> = {
       color: number | string,
       angle: number,
     ): number => {
+      g.pivot.set(-w, -h);
       g.rotateTransform(angle).ellipse(0, 0, w, h).fill(color);
       return Math.PI * w * h;
     },

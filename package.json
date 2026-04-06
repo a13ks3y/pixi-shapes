@@ -6,6 +6,7 @@
   "scripts": {
     "deploy": "sh deploy.sh",
     "test": "vitest",
+    "coverage": "vitest run --coverage",
     "start": "npm run dev",
     "build": "npm run lint && tsc && vite build",
     "lint": "eslint . --fix",
@@ -17,6 +18,7 @@
   "devDependencies": {
     "@eslint/js": "^9.21.0",
     "@types/jest": "^30.0.0",
+    "@vitest/coverage-v8": "^4.1.2",
     "eslint": "^9.21.0",
     "eslint-config-prettier": "^10.1.2",
     "eslint-plugin-prettier": "^5.2.6",
